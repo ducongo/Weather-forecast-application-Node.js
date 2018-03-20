@@ -1,0 +1,15 @@
+{
+  "name": "wethaer_fetch_application",
+  "version": "1.0.0",
+  "description": "This application process location input weather it be via latitude and longitude or simply a google like query with the address as a string. There's two apis that are used for this application. The first api used is Google map api in order to obatain the coordinates of a given string location and return a bunch of information except the application only uses the formatted address and the latitude and longitude. The second api used is forecast.io in order to fetch weather data. That weather data is process and only the required information is sent back to the client.",
+  "main": "weather_fetch_server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Parfait Kingwaya",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.16.2",
+    "request": "^2.83.0"
+  }
+}

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Location Weather Forcast</title>
+  </head>
+  <body>
+
+    <h1>WEATHER FORECAST FOR A DESIRED LOCATION</h1>
+
+    <form action="/getForecast" id="getForecast">
+      Address:<br>
+      <input type="text" name="address" value="enter an address" id="addressInput">
+      <br>
+      <input type="submit" value="Submit">
+    </form>
+
+    <link rel="stylesheet" href="current_weather.css">
+    <div id="mainDiv" class="div">
+      <div id="div1">
+        <img class="icon"id="icon"src="" alt="Weather Icon" height="800" width="800" align="middle">
+      </div>
+      <div id="div2" class="div">
+
+        <div id="div2-0" class="div-2-1">
+          <h6 id="address"></h6>
+        </div>
+
+        <div id="div2-1" class="div-2-1">
+          <h6 id="time"></h6>
+        </div>
+
+        <div id="div2-2" class="div-2-2">
+          <h6 id="summary"></h6>
+        </div>
+
+        <div id="div2-3" class="div-2-2">
+          <h6 id="temperature"></h6>
+        </div>
+
+
+      </div>
+
+    </div>
+
+
+    <p id="p1"></p>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.js" integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE=" crossorigin="anonymous"></script>
+    <script>
+    var defaultAddress = encodeURIComponent("carleton university ottawa canada");
+    //display the default weather data
+    fetchData(defaultAddress);
+
+    $(document).ready(function(){
+
+       $( "#getForecast" ).submit(function( event ) {
+
+        var address = encodeURIComponent(document.getElementById("addressInput").value);
+
+        fetchData(address);
+
+       return false;
+     });
+  });
+
+
+  //fetches the weather data needed to be displayed
+  function fetchData(address){
+
+    $.get("http://localhost:3000/getForecast?address="+ address, function(data, status){
+        //alert("Data: " + data + "\nStatus: " + status);
+        $("#address").html(data.address);
+        $("#summary").html("Summary: " + data.current.summary);
+
+        var temperatureCelsius = ((data.current.temperature - 32) * (5/9));
+
+        $("#temperature").html("Temperature: " + Math.round(temperatureCelsius*100)/100 + "°C");
+
+        var date = new Date(data.current.time*1000);
+        // Hours part from the timestamp
+        var hours = date.getHours();
+        // Minutes part from the timestamp
+        var minutes = "0" + date.getMinutes();
+        // Seconds part from the timestamp
+        var seconds = "0" + date.getSeconds();
+
+        // Will display time in 10:30:23 format
+        var formattedTime = hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
+
+        $("#time").html("Time of request: " + formattedTime);
+
+        $("#icon").attr('src', 'http://localhost:3000/icon?filename=' + data.current.icon + ".svg");
+
+    });
+
+  }
+
+    </script>
+
+  </body>
+</html>
